@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python代码示例集 - 带详细注释</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',    // 蓝色主题
+                        secondary: '#10b981',  // 绿色辅助色
+                        accent: '#8b5cf6',     // 紫色强调色
+                        neutral: '#f3f4f6',    // 浅灰色背景
+                        dark: '#1f2937',       // 深色文本
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-effect {
+                @apply bg-white bg-opacity-80 backdrop-blur-sm;
+            }
+            .code-card {
+                @apply relative overflow-hidden rounded-xl shadow-card transition-all duration-300 hover:shadow-card-hover;
+            }
+            .code-card-header {
+                @apply p-4 flex justify-between items-center cursor-pointer;
+            }
+            .code-card-body {
+                @apply overflow-x-auto;
+            }
+            .code-block {
+                @apply p-4 font-mono text-sm leading-relaxed whitespace-pre;
+            }
+            .comment {
+                @apply text-green-600;
+            }
+            .keyword {
+                @apply text-purple-600 font-semibold;
+            }
+            .string {
+                @apply text-amber-600;
+            }
+            .function {
+                @apply text-blue-600 font-semibold;
+            }
+            .number {
+                @apply text-red-600;
+            }
+            .highlight-note {
+                @apply bg-yellow-100 px-2 py-1 rounded text-yellow-800 font-medium;
+            }
+            .category-badge {
+                @apply px-3 py-1 text-xs font-medium rounded-full;
+            }
+            .copy-button {
+                @apply absolute top-2 right-2 p-2 bg-white rounded-md shadow-md opacity-0 transition-opacity duration-200 hover:bg-gray-100;
+            }
+            .code-card:hover .copy-button {
+                @apply opacity-100;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-green-50 min-h-screen">
+    <!-- 页面头部 -->
+    <header class="glass-effect sticky top-0 z-50 border-b border-gray-200">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-xl mr-3">
+                        <i class="fa fa-code"></i>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-dark">Python代码示例集</h1>
+                </div>
+                <div class="flex space-x-2">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="搜索代码示例..." 
+                               class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 介绍部分 -->
+        <section class="mb-12 text-center">
+            <h2 class="text-3xl font-bold mb-4 text-dark">Python代码片段集合</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">
+                精心整理的Python代码示例，每个片段都有详细的中文注释说明其作用和使用方法。
+                点击代码卡片可以展开或折叠查看完整代码。
+            </p>
+        </section>
+
+        <!-- 分类标签 -->
+        <section class="mb-8">
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button class="category-filter active category-badge bg-primary text-white" data-category="all">
+                    全部
+                </button>
+                <button class="category-filter category-badge bg-blue-100 text-blue-800" data-category="basic">
+                    基础语法
+                </button>
+                <button class="category-filter category-badge bg-green-100 text-green-800" data-category="control">
+                    控制流
+                </button>
+                <button class="category-filter category-badge bg-purple-100 text-purple-800" data-category="function">
+                    函数和类
+                </button>
+                <button class="category-filter category-badge bg-amber-100 text-amber-800" data-category="module">
+                    常用模块
+                </button>
+                <button class="category-filter category-badge bg-red-100 text-red-800" data-category="data">
+                    数据处理
+                </button>
+                <button class="category-filter category-badge bg-indigo-100 text-indigo-800" data-category="network">
+                    网络请求
+                </button>
+                <button class="category-filter category-badge bg-pink-100 text-pink-800" data-category="utility">
+                    实用工具
+                </button>
+            </div>
+        </section>
+
+        <!-- 代码卡片网格 -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 基础语法 - 变量和数据类型 -->
+            <div class="code-card glass-effect" data-category="basic">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-blue-500 to-blue-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">变量和数据类型</h3>
+                        <p class="text-sm opacity-90">Python的基本数据类型和变量使用</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 基本数据类型示例</span>
+<span class="keyword">integer</span> = <span class="number">10</span>  <span class="comment"># 整数类型</span>
+<span class="keyword">float_num</span> = <span class="number">3.14</span>  <span class="comment"># 浮点数类型</span>
+<span class="keyword">string</span> = <span class="string">"Hello Python"</span>  <span class="comment"># 字符串类型</span>
+<span class="keyword">boolean</span> = <span class="keyword">True</span>  <span class="comment"># 布尔类型</span>
+<span class="keyword">none_value</span> = <span class="keyword">None</span>  <span class="comment"># None值，表示空</span>
+
+<span class="comment"># 复合数据类型</span>
+<span class="keyword">list_data</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">"apple"</span>, <span class="keyword">True</span>]  <span class="comment"># 列表 - 可变序列</span>
+<span class="keyword">tuple_data</span> = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)  <span class="comment"># 元组 - 不可变序列</span>
+<span class="keyword">dict_data</span> = {<span class="string">"name"</span>: <span class="string">"张三"</span>, <span class="string">"age"</span>: <span class="number">25</span>}  <span class="comment"># 字典 - 键值对</span>
+<span class="keyword">set_data</span> = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>}  <span class="comment"># 集合 - 自动去重</span>
+
+<span class="comment"># 数据类型转换</span>
+<span class="keyword">num_str</span> = <span class="string">"123"</span>
+<span class="keyword">num_int</span> = <span class="function">int</span>(num_str)  <span class="comment"># 字符串转整数</span>
+<span class="keyword">result</span> = <span class="function">str</span>(<span class="number">456</span>) + <span class="string">" is a number"</span>  <span class="comment"># 整数转字符串</span>
+
+<span class="highlight-note"># 重要提示：Python是动态类型语言，变量类型可以随时改变</span>
+<span class="keyword">x</span> = <span class="number">10</span>  <span class="comment"># x现在是整数</span>
+<span class="keyword">x</span> = <span class="string">"现在x是字符串"</span>  <span class="comment"># x现在是字符串</span></pre>
+                </div>
+            </div>
+
+            <!-- 基础语法 - 字符串操作 -->
+            <div class="code-card glass-effect" data-category="basic">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-blue-500 to-blue-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">字符串操作</h3>
+                        <p class="text-sm opacity-90">Python字符串的常用处理方法</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="keyword">text</span> = <span class="string">"Python Programming"</span>
+
+<span class="comment"># 基本字符串操作</span>
+<span class="function">print</span>(text.<span class="function">lower</span>())          <span class="comment"># 转小写: python programming</span>
+<span class="function">print</span>(text.<span class="function">upper</span>())          <span class="comment"># 转大写: PYTHON PROGRAMMING</span>
+<span class="function">print</span>(text.<span class="function">strip</span>())          <span class="comment"># 去除两端空白</span>
+<span class="function">print</span>(text.<span class="function">replace</span>(<span class="string">"P"</span>, <span class="string">"p"</span>))  <span class="comment"># 替换: python programming</span>
+
+<span class="comment"># 字符串查找</span>
+<span class="keyword">position</span> = text.<span class="function">find</span>(<span class="string">"Pro"</span>)        <span class="comment"># 查找子串位置</span>
+<span class="keyword">contains</span> = <span class="string">"gram"</span> <span class="keyword">in</span> text          <span class="comment"># 检查是否包含子串</span>
+
+<span class="comment"># 字符串分割和连接</span>
+<span class="keyword">words</span> = text.<span class="function">split</span>()              <span class="comment"># 按空格分割</span>
+<span class="keyword">sentence</span> = <span class="string">" "</span>.<span class="function">join</span>(words)        <span class="comment"># 用空格连接</span>
+
+<span class="comment"># 字符串格式化方法1: f-string (Python 3.6+)</span>
+<span class="keyword">name</span> = <span class="string">"李四"</span>
+<span class="keyword">age</span> = <span class="number">28</span>
+<span class="function">print</span>(<span class="string">f"姓名: {name}, 年龄: {age}"</span>)
+
+<span class="comment"># 字符串格式化方法2: format()</span>
+<span class="function">print</span>(<span class="string">"姓名: {}, 年龄: {}"</span>.<span class="function">format</span>(name, age))
+
+<span class="comment"># 字符串格式化方法3: 占位符</span>
+<span class="function">print</span>(<span class="string">"姓名: %s, 年龄: %d"</span> % (name, age))
+
+<span class="highlight-note"># 重要提示：f-string是最推荐的字符串格式化方式，简洁且功能强大</span>
+<span class="keyword">price</span> = <span class="number">19.99</span>
+<span class="function">print</span>(<span class="string">f"商品价格: ¥{price:.2f}"</span>)  <span class="comment"># 保留2位小数</span>
+<span class="function">print</span>(<span class="string">f"二进制: {42:b}, 八进制: {42:o}, 十六进制: {42:x}"</span>)</pre>
+                </div>
+            </div>
+
+            <!-- 控制流 - 条件语句 -->
+            <div class="code-card glass-effect" data-category="control">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-green-500 to-green-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">条件语句</h3>
+                        <p class="text-sm opacity-90">if-elif-else条件判断结构</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="keyword">score</span> = <span class="number">85</span>
+
+<span class="comment"># 基本条件判断结构</span>
+<span class="keyword">if</span> score >= <span class="number">90</span>:
+    <span class="keyword">grade</span> = <span class="string">"优秀"</span>
+    <span class="keyword">comment</span> = <span class="string">"非常棒！"</span>
+<span class="keyword">elif</span> score >= <span class="number">80</span>:
+    <span class="keyword">grade</span> = <span class="string">"良好"</span>
+    <span class="keyword">comment</span> = <span class="string">"做得不错"</span>
+<span class="keyword">elif</span> score >= <span class="number">60</span>:
+    <span class="keyword">grade</span> = <span class="string">"及格"</span>
+    <span class="keyword">comment</span> = <span class="string">"继续努力"</span>
+<span class="keyword">else</span>:
+    <span class="keyword">grade</span> = <span class="string">"不及格"</span>
+    <span class="keyword">comment</span> = <span class="string">"需要加强"</span>
+
+<span class="function">print</span>(<span class="string">f"成绩: {score}, 等级: {grade}, 评语: {comment}"</span>)
+
+<span class="comment"># 嵌套条件语句</span>
+<span class="keyword">is_vip</span> = <span class="keyword">True</span>
+<span class="keyword">purchase_amount</span> = <span class="number">1200</span>
+
+<span class="keyword">if</span> purchase_amount > <span class="number">1000</span>:
+    <span class="keyword">discount</span> = <span class="number">0.1</span>  <span class="comment"># 10%折扣</span>
+    <span class="keyword">if</span> is_vip:
+        <span class="keyword">discount</span> += <span class="number">0.05</span>  <span class="comment"># VIP额外5%折扣</span>
+<span class="keyword">else</span>:
+    <span class="keyword">discount</span> = <span class="number">0</span>
+
+<span class="keyword">final_price</span> = purchase_amount * (<span class="number">1</span> - discount)
+<span class="function">print</span>(<span class="string">f"最终价格: ¥{final_price:.2f}"</span>)
+
+<span class="highlight-note"># 重要提示：Python使用缩进（通常4个空格）来表示代码块，而不是大括号</span></pre>
+                </div>
+            </div>
+
+            <!-- 控制流 - 循环结构 -->
+            <div class="code-card glass-effect" data-category="control">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-green-500 to-green-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">循环结构</h3>
+                        <p class="text-sm opacity-90">for和while循环的使用方法</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># for循环 - 遍历列表</span>
+<span class="keyword">fruits</span> = [<span class="string">"苹果"</span>, <span class="string">"香蕉"</span>, <span class="string">"橙子"</span>]
+<span class="keyword">for</span> fruit <span class="keyword">in</span> fruits:
+    <span class="function">print</span>(<span class="string">f"我喜欢吃 {fruit}"</span>)
+
+<span class="comment"># for循环 - 使用range()函数</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>):  <span class="comment"># 0到4</span>
+    <span class="function">print</span>(i)
+
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>):  <span class="comment"># 1到9，步长为2</span>
+    <span class="function">print</span>(i)
+
+<span class="comment"># while循环</span>
+<span class="keyword">count</span> = <span class="number">1</span>
+<span class="keyword">while</span> count <= <span class="number">5</span>:
+    <span class="function">print</span>(<span class="string">f"计数: {count}"</span>)
+    count += <span class="number">1</span>  <span class="comment"># 重要：不要忘记更新循环变量</span>
+
+<span class="comment"># 循环控制语句</span>
+<span class="function">print</span>(<span class="string">"使用continue跳过某些循环:"</span>)
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>):
+    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>:
+        <span class="keyword">continue</span>  <span class="comment"># 跳过偶数</span>
+    <span class="function">print</span>(i)
+
+<span class="function">print</span>(<span class="string">"使用break提前结束循环:"</span>)
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">100</span>):
+    <span class="keyword">if</span> i == <span class="number">5</span>:
+        <span class="keyword">break</span>  <span class="comment"># 当i等于5时结束循环</span>
+    <span class="function">print</span>(i)
+
+<span class="highlight-note"># 重要提示：无限循环要谨慎使用</span>
+<span class="comment"># while True:  # 这会创建无限循环</span>
+<span class="comment">#     print("小心无限循环！")</span></pre>
+                </div>
+            </div>
+
+            <!-- 函数和类 - 函数定义 -->
+            <div class="code-card glass-effect" data-category="function">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-purple-500 to-purple-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">函数定义</h3>
+                        <p class="text-sm opacity-90">Python函数的创建和使用方法</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 基本函数定义</span>
+<span class="keyword">def</span> <span class="function">greet</span>():
+    <span class="string">"""这是一个简单的问候函数"""</span>
+    <span class="keyword">return</span> <span class="string">"你好，世界！"</span>
+
+<span class="comment"># 调用函数</span>
+<span class="keyword">message</span> = <span class="function">greet</span>()
+<span class="function">print</span>(message)
+
+<span class="comment"># 带参数的函数</span>
+<span class="keyword">def</span> <span class="function">calculate_area</span>(radius):
+    <span class="string">"""
+    计算圆的面积
+    
+    参数:
+        radius (float): 圆的半径
+    
+    返回:
+        float: 圆的面积
+    """</span>
+    <span class="keyword">import</span> math
+    <span class="keyword">return</span> math.pi * radius ** <span class="number">2</span>
+
+<span class="comment"># 调用带参数的函数</span>
+<span class="keyword">area</span> = <span class="function">calculate_area</span>(<span class="number">5</span>)
+<span class="function">print</span>(<span class="string">f"半径为5的圆面积: {area:.2f}"</span>)
+
+<span class="comment"># 带默认参数的函数</span>
+<span class="keyword">def</span> <span class="function">describe_person</span>(name, age=<span class="number">18</span>, city=<span class="string">"未知"</span>):
+    <span class="string">"""描述一个人的信息"""</span>
+    <span class="keyword">return</span> <span class="string">f"{name}，{age}岁，来自{city}"</span>
+
+<span class="function">print</span>(<span class="function">describe_person</span>(<span class="string">"张三"</span>))  <span class="comment"># 使用默认参数</span>
+<span class="function">print</span>(<span class="function">describe_person</span>(<span class="string">"李四"</span>, <span class="number">25</span>))  <span class="comment"># 覆盖一个默认参数</span>
+<span class="function">print</span>(<span class="function">describe_person</span>(<span class="string">"王五"</span>, <span class="number">30</span>, <span class="string">"北京"</span>))  <span class="comment"># 覆盖所有默认参数</span>
+
+<span class="comment"># 匿名函数（lambda）</span>
+<span class="keyword">square</span> = <span class="keyword">lambda</span> x: x ** <span class="number">2</span>
+<span class="function">print</span>(<span class="function">square</span>(<span class="number">4</span>))  <span class="comment"># 输出: 16</span>
+
+<span class="comment"># 使用lambda作为排序的key</span>
+<span class="keyword">students</span> = [(<span class="string">"张三"</span>, <span class="number">85</span>), (<span class="string">"李四"</span>, <span class="number">92</span>), (<span class="string">"王五"</span>, <span class="number">78</span>)]
+<span class="keyword">students</span>.<span class="function">sort</span>(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="keyword">True</span>)
+<span class="function">print</span>(students)
+
+<span class="highlight-note"># 重要提示：函数文档字符串（docstring）对于代码可读性和维护非常重要</span></pre>
+                </div>
+            </div>
+
+            <!-- 函数和类 - 类的定义 -->
+            <div class="code-card glass-effect" data-category="function">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-purple-500 to-purple-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">类的定义</h3>
+                        <p class="text-sm opacity-90">面向对象编程中的类和对象</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 基本类定义</span>
+<span class="keyword">class</span> <span class="function">Student</span>:
+    <span class="string">"""学生类 - 表示学校中的学生"""</span>
+    
+    <span class="comment"># 类变量 - 所有实例共享</span>
+    <span class="keyword">school_name</span> = <span class="string">"北京大学"</span>
+    
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, name, student_id):
+        <span class="string">"""
+        初始化方法（构造函数）
+        
+        参数:
+            name (str): 学生姓名
+            student_id (str): 学号
+        """</span>
+        <span class="comment"># 实例变量 - 每个实例独有</span>
+        self.name = name
+        self.student_id = student_id
+        self.courses = []  <span class="comment"># 选修课程列表</span>
+        self.grades = {}   <span class="comment"># 成绩字典</span>
+    
+    <span class="keyword">def</span> <span class="function">enroll_course</span>(self, course_name):
+        <span class="string">"""选修课程"""</span>
+        <span class="keyword">if</span> course_name <span class="keyword">not in</span> self.courses:
+            self.courses.<span class="function">append</span>(course_name)
+            <span class="function">print</span>(<span class="string">f"{self.name} 已选修 {course_name}"</span>)
+    
+    <span class="keyword">def</span> <span class="function">set_grade</span>(self, course_name, grade):
+        <span class="string">"""设置课程成绩"""</span>
+        <span class="keyword">if</span> course_name <span class="keyword">in</span> self.courses:
+            self.grades[course_name] = grade
+        <span class="keyword">else</span>:
+            <span class="function">print</span>(<span class="string">f"{self.name} 未选修 {course_name} 课程"</span>)
+    
+    <span class="keyword">def</span> <span class="function">get_average_grade</span>(self):
+        <span class="string">"""计算平均成绩"""</span>
+        <span class="keyword">if</span> <span class="function">len</span>(self.grades) == <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="number">0</span>
+        <span class="keyword">return</span> <span class="function">sum</span>(self.grades.<span class="function">values</span>()) / <span class="function">len</span>(self.grades)
+    
+    <span class="keyword">def</span> <span class="function">get_info</span>(self):
+        <span class="string">"""获取学生完整信息"""</span>
+        <span class="keyword">info</span> = <span class="string">f"姓名: {self.name}\n"</span>
+        <span class="keyword">info</span> += <span class="string">f"学号: {self.student_id}\n"</span>
+        <span class="keyword">info</span> += <span class="string">f"学校: {self.school_name}\n"</span>
+        <span class="keyword">info</span> += <span class="string">f"选修课程: {', '.join(self.courses)}\n"</span>
+        <span class="keyword">info</span> += <span class="string">f"平均成绩: {self.get_average_grade():.1f}"</span>
+        <span class="keyword">return</span> info
+
+<span class="comment"># 创建类的实例（对象）</span>
+<span class="keyword">student1</span> = <span class="function">Student</span>(<span class="string">"小明"</span>, <span class="string">"2024001"</span>)
+<span class="keyword">student2</span> = <span class="function">Student</span>(<span class="string">"小红"</span>, <span class="string">"2024002"</span>)
+
+<span class="comment"># 使用对象的方法</span>
+<span class="keyword">student1</span>.<span class="function">enroll_course</span>(<span class="string">"Python编程"</span>)
+<span class="keyword">student1</span>.<span class="function">enroll_course</span>(<span class="string">"数据结构"</span>)
+<span class="keyword">student1</span>.<span class="function">set_grade</span>(<span class="string">"Python编程"</span>, <span class="number">95</span>)
+<span class="keyword">student1</span>.<span class="function">set_grade</span>(<span class="string">"数据结构"</span>, <span class="number">88</span>)
+
+<span class="comment"># 访问对象的属性</span>
+<span class="function">print</span>(<span class="function">student1</span>.<span class="function">get_info</span>())
+
+<span class="comment"># 修改类变量（会影响所有实例）</span>
+<span class="function">Student</span>.<span class="keyword">school_name</span> = <span class="string">"清华大学"</span>
+<span class="function">print</span>(<span class="string">f"{student2.name} 的学校: {student2.school_name}"</span>)
+
+<span class="highlight-note"># 重要提示：Python使用self作为实例的引用，这是类方法的第一个参数</span></pre>
+                </div>
+            </div>
+
+            <!-- 常用模块 - 文件操作 -->
+            <div class="code-card glass-effect" data-category="module">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-amber-500 to-amber-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">文件操作</h3>
+                        <p class="text-sm opacity-90">读写文件的安全方法</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 读取文件 - 使用with语句（推荐方式）</span>
+<span class="keyword">try</span>:
+    <span class="keyword">with</span> <span class="function">open</span>(<span class="string">"example.txt"</span>, <span class="string">"r"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> file:
+        <span class="comment"># 读取整个文件</span>
+        <span class="keyword">content</span> = file.<span class="function">read</span>()
+        <span class="function">print</span>(<span class="string">"文件内容:"</span>)
+        <span class="function">print</span>(content)
+        
+        <span class="comment"># 重置文件指针到开头</span>
+        file.<span class="function">seek</span>(<span class="number">0</span>)
+        
+        <span class="comment"># 逐行读取</span>
+        <span class="function">print</span>(<span class="string">"\n逐行读取:"</span>)
+        <span class="keyword">for</span> line <span class="keyword">in</span> file:
+            <span class="function">print</span>(line.<span class="function">strip</span>())
+            
+<span class="keyword">except</span> <span class="function">FileNotFoundError</span>:
+    <span class="function">print</span>(<span class="string">"错误: 文件不存在"</span>)
+<span class="keyword">except</span> <span class="function">PermissionError</span>:
+    <span class="function">print</span>(<span class="string">"错误: 没有文件访问权限"</span>)
+<span class="keyword">except</span> <span class="keyword">Exception</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"读取文件时发生错误: {e}"</span>)
+
+<span class="comment"># 写入文件 - 使用with语句</span>
+<span class="keyword">try</span>:
+    <span class="keyword">with</span> <span class="function">open</span>(<span class="string">"output.txt"</span>, <span class="string">"w"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> file:
+        <span class="comment"># 写入单行</span>
+        file.<span class="function">write</span>(<span class="string">"Hello, Python!\n"</span>)
+        
+        <span class="comment"># 写入多行</span>
+        <span class="keyword">lines</span> = [
+            <span class="string">"这是第二行内容\n"</span>,
+            <span class="string">"这是第三行内容\n"</span>,
+            <span class="string">"Python文件操作很简单！"</span>
+        ]
+        file.<span class="function">writelines</span>(lines)
+    
+    <span class="function">print</span>(<span class="string">"文件写入成功！"</span>)
+    
+<span class="keyword">except</span> <span class="keyword">Exception</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"写入文件时发生错误: {e}"</span>)
+
+<span class="comment"># 文件模式说明</span>
+<span class="comment"># 'r' - 只读模式（默认）</span>
+<span class="comment"># 'w' - 写入模式（会覆盖现有文件）</span>
+<span class="comment"># 'a' - 追加模式（在文件末尾添加内容）</span>
+<span class="comment"># 'x' - 独占创建模式（如果文件已存在则失败）</span>
+<span class="comment"># 'b' - 二进制模式（如 'rb', 'wb'）</span>
+<span class="comment"># '+' - 读写模式（如 'r+', 'w+'）</span>
+
+<span class="highlight-note"># 重要提示：使用with语句自动管理文件关闭，避免资源泄露</span></pre>
+                </div>
+            </div>
+
+            <!-- 常用模块 - 时间模块 -->
+            <div class="code-card glass-effect" data-category="module">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-amber-500 to-amber-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">时间模块</h3>
+                        <p class="text-sm opacity-90">处理日期和时间的方法</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 导入时间模块</span>
+<span class="keyword">import</span> time
+<span class="keyword">import</span> datetime
+
+<span class="comment"># time模块基本使用</span>
+<span class="comment"># 获取当前时间戳（从1970年1月1日开始的秒数）</span>
+<span class="keyword">current_time</span> = time.<span class="function">time</span>()
+<span class="function">print</span>(<span class="string">f"当前时间戳: {current_time}"</span>)
+
+<span class="comment"># 将时间戳转换为本地时间</span>
+<span class="keyword">local_time</span> = time.<span class="function">localtime</span>(current_time)
+<span class="function">print</span>(<span class="string">f"本地时间: {time.strftime('%Y-%m-%d %H:%M:%S', local_time)}"</span>)
+
+<span class="comment"># 时间格式化符号说明</span>
+<span class="comment"># %Y - 四位年份</span>
+<span class="comment"># %m - 两位月份(01-12)</span>
+<span class="comment"># %d - 两位日期(01-31)</span>
+<span class="comment"># %H - 24小时制(00-23)</span>
+<span class="comment"># %M - 分钟(00-59)</span>
+<span class="comment"># %S - 秒(00-59)</span>
+
+<span class="comment"># 程序延时</span>
+<span class="function">print</span>(<span class="string">"等待3秒钟..."</span>)
+time.<span class="function">sleep</span>(<span class="number">3</span>)
+<span class="function">print</span>(<span class="string">"3秒后..."</span>)
+
+<span class="comment"># datetime模块使用</span>
+<span class="keyword">now</span> = datetime.datetime.<span class="function">now</span>()
+<span class="function">print</span>(<span class="string">f"当前日期时间: {now}"</span>)
+<span class="function">print</span>(<span class="string">f"今天日期: {now.date()}"</span>)
+<span class="function">print</span>(<span class="string">f"当前时间: {now.time()}"</span>)
+<span class="function">print</span>(<span class="string">f"年份: {now.year}"</span>)
+<span class="function">print</span>(<span class="string">f"月份: {now.month}"</span>)
+<span class="function">print</span>(<span class="string">f"日期: {now.day}"</span>)
+
+<span class="comment"># 创建特定日期时间</span>
+<span class="keyword">specific_date</span> = datetime.datetime(<span class="number">2024</span>, <span class="number">12</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>)
+<span class="function">print</span>(<span class="string">f"特定日期: {specific_date}"</span>)
+
+<span class="comment"># 日期时间计算</span>
+<span class="keyword">tomorrow</span> = now + datetime.timedelta(days=<span class="number">1</span>)
+<span class="function">print</span>(<span class="string">f"明天此时: {tomorrow}"</span>)
+
+<span class="keyword">next_week</span> = now + datetime.timedelta(weeks=<span class="number">1</span>)
+<span class="function">print</span>(<span class="string">f"下周此时: {next_week}"</span>)
+
+<span class="comment"># 日期时间格式化</span>
+<span class="keyword">formatted_date</span> = now.<span class="function">strftime</span>(<span class="string">"%Y年%m月%d日 %H时%M分%S秒"</span>)
+<span class="function">print</span>(<span class="string">f"格式化日期: {formatted_date}"</span>)
+
+<span class="highlight-note"># 重要提示：处理跨时区时间时，建议使用pytz或dateutil库</span></pre>
+                </div>
+            </div>
+
+            <!-- 数据处理 - 列表操作 -->
+            <div class="code-card glass-effect" data-category="data">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-red-500 to-red-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">列表操作</h3>
+                        <p class="text-sm opacity-90">Python列表的常用操作和技巧</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 创建列表</span>
+<span class="keyword">numbers</span> = [<span class="number">5</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">3</span>]
+<span class="keyword">mixed_list</span> = [<span class="number">1</span>, <span class="string">"apple"</span>, <span class="keyword">True</span>, <span class="number">3.14</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]]
+
+<span class="comment"># 访问列表元素</span>
+<span class="function">print</span>(<span class="string">f"第一个元素: {numbers[0]}"</span>)
+<span class="function">print</span>(<span class="string">f"最后一个元素: {numbers[-1]}"</span>)
+<span class="function">print</span>(<span class="string">f"索引2到4的元素: {numbers[2:5]}"</span>)  <span class="comment"># 切片，不包含结束索引</span>
+<span class="function">print</span>(<span class="string">f"所有元素: {numbers[:]}"</span>)
+<span class="function">print</span>(<span class="string">f"每隔一个元素: {numbers[::2]}"</span>)  <span class="comment"># 步长为2</span>
+
+<span class="comment"># 修改列表</span>
+<span class="keyword">numbers</span>[<span class="number">1</span>] = <span class="number">20</span>  <span class="comment"># 修改元素</span>
+<span class="keyword">numbers</span>.<span class="function">append</span>(<span class="number">8</span>)  <span class="comment"># 添加元素到末尾</span>
+<span class="keyword">numbers</span>.<span class="function">insert</span>(<span class="number">0</span>, <span class="number">10</span>)  <span class="comment"># 在指定位置插入元素</span>
+<span class="keyword">numbers</span>.<span class="function">extend</span>([<span class="number">11</span>, <span class="number">12</span>])  <span class="comment"># 扩展列表</span>
+
+<span class="comment"># 删除元素</span>
+<span class="keyword">removed</span> = <span class="keyword">numbers</span>.<span class="function">pop</span>()  <span class="comment"># 删除并返回最后一个元素</span>
+<span class="keyword">numbers</span>.<span class="function">pop</span>(<span class="number">1</span>)  <span class="comment"># 删除指定位置的元素</span>
+<span class="keyword">numbers</span>.<span class="function">remove</span>(<span class="number">7</span>)  <span class="comment"># 删除第一个值为7的元素</span>
+<span class="keyword">del</span> <span class="keyword">numbers</span>[<span class="number">0</span>:<span class="number">2</span>]  <span class="comment"># 删除切片</span>
+
+<span class="comment"># 列表排序</span>
+<span class="keyword">numbers</span>.<span class="function">sort</span>()  <span class="comment"># 升序排序（原地修改）</span>
+<span class="keyword">numbers</span>.<span class="function">sort</span>(reverse=<span class="keyword">True</span>)  <span class="comment"># 降序排序</span>
+<span class="keyword">sorted_numbers</span> = <span class="function">sorted</span>(<span class="keyword">numbers</span>)  <span class="comment"># 返回新的排序列表</span>
+
+<span class="comment"># 列表其他常用方法</span>
+<span class="function">print</span>(<span class="string">f"最大值: {max(numbers)}"</span>)
+<span class="function">print</span>(<span class="string">f"最小值: {min(numbers)}"</span>)
+<span class="function">print</span>(<span class="string">f"总和: {sum(numbers)}"</span>)
+<span class="function">print</span>(<span class="string">f"长度: {len(numbers)}"</span>)
+<span class="function">print</span>(<span class="string">f"元素5出现的次数: {numbers.count(5)}"</span>)
+<span class="function">print</span>(<span class="string">f"元素7的索引: {numbers.index(7)}"</span>)
+
+<span class="comment"># 列表推导式</span>
+<span class="keyword">squares</span> = [x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>)]
+<span class="keyword">even_squares</span> = [x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>) <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]
+
+<span class="function">print</span>(<span class="string">f"1-10的平方: {squares}"</span>)
+<span class="function">print</span>(<span class="string">f"1-10中偶数的平方: {even_squares}"</span>)
+
+<span class="highlight-note"># 重要提示：列表是可变对象，操作会直接修改原列表</span>
+<span class="keyword">list1</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+<span class="keyword">list2</span> = list1  <span class="comment"># 这是引用，不是复制</span>
+<span class="keyword">list2</span>.<span class="function">append</span>(<span class="number">4</span>)
+<span class="function">print</span>(<span class="string">f"list1: {list1}"</span>)  <span class="comment"># 输出: [1, 2, 3, 4]</span>
+
+<span class="comment"># 正确的复制方法</span>
+<span class="keyword">list3</span> = list1[:]  <span class="comment"># 切片复制</span>
+<span class="keyword">list4</span> = <span class="function">list</span>(list1)  <span class="comment"># 构造函数复制</span>
+<span class="keyword">list5</span> = list1.<span class="function">copy</span>()  <span class="comment"># copy方法复制</span></pre>
+                </div>
+            </div>
+
+            <!-- 数据处理 - 字典操作 -->
+            <div class="code-card glass-effect" data-category="data">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-red-500 to-red-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">字典操作</h3>
+                        <p class="text-sm opacity-90">Python字典的常用操作和技巧</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 创建字典</span>
+<span class="keyword">person</span> = {
+    <span class="string">"name"</span>: <span class="string">"张三"</span>,
+    <span class="string">"age"</span>: <span class="number">30</span>,
+    <span class="string">"city"</span>: <span class="string">"上海"</span>,
+    <span class="string">"skills"</span>: [<span class="string">"Python"</span>, <span class="string">"Java"</span>, <span class="string">"SQL"</span>]
+}
+
+<span class="comment"># 使用dict()构造函数创建</span>
+<span class="keyword">person2</span> = <span class="function">dict</span>(name=<span class="string">"李四"</span>, age=<span class="number">25</span>, city=<span class="string">"北京"</span>)
+
+<span class="comment"># 访问字典元素</span>
+<span class="function">print</span>(<span class="string">f"姓名: {person['name']}"</span>)
+<span class="function">print</span>(<span class="string">f"技能: {person.get('skills', [])}"</span>)  <span class="comment"># 使用get方法，键不存在时返回默认值</span>
+
+<span class="comment"># 修改字典</span>
+<span class="keyword">person</span>[<span class="string">"age"</span>] = <span class="number">31</span>  <span class="comment"># 修改现有键的值</span>
+<span class="keyword">person</span>[<span class="string">"email"</span>] = <span class="string">"zhangsan@example.com"</span>  <span class="comment"># 添加新键值对</span>
+<span class="keyword">person</span>.<span class="function">update</span>({<span class="string">"phone"</span>: <span class="string">"13800138000"</span>, <span class="string">"city"</span>: <span class="string">"深圳"</span>})  <span class="comment"># 批量更新</span>
+
+<span class="comment"># 删除元素</span>
+<span class="keyword">email</span> = <span class="keyword">person</span>.<span class="function">pop</span>(<span class="string">"email"</span>)  <span class="comment"># 删除并返回值</span>
+<span class="keyword">del</span> <span class="keyword">person</span>[<span class="string">"phone"</span>]  <span class="comment"># 删除指定键</span>
+<span class="keyword">person</span>.<span class="function">clear</span>()  <span class="comment"># 清空字典</span>
+
+<span class="comment"># 字典遍历</span>
+<span class="function">print</span>(<span class="string">"字典内容:"</span>)
+<span class="keyword">for</span> key, value <span class="keyword">in</span> <span class="keyword">person2</span>.<span class="function">items</span>():
+    <span class="function">print</span>(<span class="string">f"{key}: {value}"</span>)
+
+<span class="function">print</span>(<span class="string">"\n所有键:"</span>)
+<span class="keyword">for</span> key <span class="keyword">in</span> <span class="keyword">person2</span>.<span class="function">keys</span>():
+    <span class="function">print</span>(key)
+
+<span class="function">print</span>(<span class="string">"\n所有值:"</span>)
+<span class="keyword">for</span> value <span class="keyword">in</span> <span class="keyword">person2</span>.<span class="function">values</span>():
+    <span class="function">print</span>(value)
+
+<span class="comment"># 字典推导式</span>
+<span class="keyword">squares_dict</span> = {x: x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, <span class="number">6</span>)}
+<span class="function">print</span>(<span class="string">f"平方字典: {squares_dict}"</span>)
+
+<span class="keyword">filtered_dict</span> = {k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> squares_dict.<span class="function">items</span>() <span class="keyword">if</span> v > <span class="number">10</span>}
+<span class="function">print</span>(<span class="string">f"值大于10的项: {filtered_dict}"</span>)
+
+<span class="comment"># 字典常用方法</span>
+<span class="function">print</span>(<span class="string">f"字典长度: {len(person2)}"</span>)
+<span class="function">print</span>(<span class="string">f"'name'键是否存在: {'name' in person2}"</span>)
+
+<span class="highlight-note"># 重要提示：字典的键必须是不可变类型（字符串、数字、元组等）</span>
+<span class="comment"># 以下代码会报错</span>
+<span class="comment"># person[[1, 2]] = "错误"  # 列表不能作为键</span>
+<span class="comment"># 但元组可以作为键（如果元组内的所有元素都是不可变的）</span>
+<span class="keyword">person3</span> = {}
+<span class="keyword">person3</span>[(<span class="number">1</span>, <span class="number">2</span>)] = <span class="string">"元组作为键"</span>
+<span class="function">print</span>(<span class="keyword">person3</span>[(<span class="number">1</span>, <span class="number">2</span>)])</pre>
+                </div>
+            </div>
+
+            <!-- 网络请求 -->
+            <div class="code-card glass-effect" data-category="network">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-indigo-500 to-indigo-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">网络请求</h3>
+                        <p class="text-sm opacity-90">使用requests库发送HTTP请求</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 首先需要安装requests库: pip install requests</span>
+<span class="keyword">import</span> requests
+
+<span class="comment"># 发送GET请求</span>
+<span class="keyword">try</span>:
+    <span class="comment"># 获取GitHub用户信息</span>
+    <span class="keyword">response</span> = requests.<span class="function">get</span>(<span class="string">"https://api.github.com/users/octocat"</span>)
+    
+    <span class="comment"># 检查响应状态码</span>
+    <span class="keyword">if</span> response.<span class="keyword">status_code</span> == <span class="number">200</span>:
+        <span class="comment"># 解析JSON响应</span>
+        <span class="keyword">data</span> = response.<span class="function">json</span>()
+        <span class="function">print</span>(<span class="string">f"用户名: {data.get('name')}"</span>)
+        <span class="function">print</span>(<span class="string">f"简介: {data.get('bio')}"</span>)
+        <span class="function">print</span>(<span class="string">f"粉丝数: {data.get('followers')}"</span>)
+        <span class="function">print</span>(<span class="string">f"仓库数: {data.get('public_repos')}"</span>)
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">f"请求失败: {response.status_code}"</span>)
+        
+<span class="keyword">except</span> requests.<span class="function">exceptions</span>.<span class="function">RequestException</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"网络错误: {e}"</span>)
+
+<span class="comment"># 发送带参数的GET请求</span>
+<span class="keyword">try</span>:
+    <span class="keyword">params</span> = {
+        <span class="string">"q"</span>: <span class="string">"python programming"</span>,
+        <span class="string">"sort"</span>: <span class="string">"stars"</span>,
+        <span class="string">"order"</span>: <span class="string">"desc"</span>
+    }
+    <span class="keyword">response</span> = requests.<span class="function">get</span>(<span class="string">"https://api.github.com/search/repositories"</span>, params=params)
+    
+    <span class="keyword">if</span> response.<span class="keyword">status_code</span> == <span class="number">200</span>:
+        <span class="keyword">data</span> = response.<span class="function">json</span>()
+        <span class="function">print</span>(<span class="string">f"找到 {data.get('total_count')} 个仓库"</span>)
+        
+        <span class="comment"># 打印前3个仓库</span>
+        <span class="keyword">for</span> item <span class="keyword">in</span> data.get(<span class="string">'items'</span>, [])[:<span class="number">3</span>]:
+            <span class="function">print</span>(<span class="string">f"- {item.get('name')}: {item.get('stargazers_count')} ⭐"</span>)
+            
+<span class="keyword">except</span> <span class="keyword">Exception</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"请求出错: {e}"</span>)
+
+<span class="comment"># 发送POST请求</span>
+<span class="keyword">try</span>:
+    <span class="keyword">url</span> = <span class="string">"https://httpbin.org/post"</span>
+    <span class="keyword">payload</span> = {
+        <span class="string">"name"</span>: <span class="string">"张三"</span>,
+        <span class="string">"age"</span>: <span class="number">30</span>,
+        <span class="string">"skills"</span>: [<span class="string">"Python"</span>, <span class="string">"JavaScript"</span>]
+    }
+    
+    <span class="comment"># 设置请求头</span>
+    <span class="keyword">headers</span> = {
+        <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,
+        <span class="string">"User-Agent"</span>: <span class="string">"Python-Requests/2.0"</span>
+    }
+    
+    <span class="keyword">response</span> = requests.<span class="function">post</span>(url, json=payload, headers=headers)
+    
+    <span class="keyword">if</span> response.<span class="keyword">status_code</span> == <span class="number">200</span>:
+        <span class="keyword">result</span> = response.<span class="function">json</span>()
+        <span class="function">print</span>(<span class="string">"POST请求成功，服务器返回:"</span>)
+        <span class="function">print</span>(<span class="string">f"数据: {result.get('json')}"</span>)
+        
+<span class="keyword">except</span> <span class="keyword">Exception</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"POST请求失败: {e}"</span>)
+
+<span class="comment"># 文件下载</span>
+<span class="keyword">def</span> <span class="function">download_file</span>(url, save_path):
+    <span class="string">"""下载文件并保存到本地"""</span>
+    <span class="keyword">try</span>:
+        <span class="function">print</span>(<span class="string">f"开始下载: {url}"</span>)
+        
+        <span class="comment"># 使用stream=True进行流式下载</span>
+        <span class="keyword">with</span> requests.<span class="function">get</span>(url, stream=<span class="keyword">True</span>) <span class="keyword">as</span> r:
+            r.<span class="function">raise_for_status</span>()  <span class="comment"># 检查HTTP错误</span>
+            
+            <span class="keyword">with</span> <span class="function">open</span>(save_path, <span class="string">'wb'</span>) <span class="keyword">as</span> f:
+                <span class="keyword">for</span> chunk <span class="keyword">in</span> r.<span class="function">iter_content</span>(chunk_size=<span class="number">8192</span>):
+                    <span class="keyword">if</span> chunk:  <span class="comment"># 过滤掉保持连接的新块</span>
+                        f.<span class="function">write</span>(chunk)
+        
+        <span class="function">print</span>(<span class="string">f"文件已保存到: {save_path}"</span>)
+        
+    <span class="keyword">except</span> <span class="keyword">Exception</span> <span class="keyword">as</span> e:
+        <span class="function">print</span>(<span class="string">f"下载失败: {e}"</span>)
+
+<span class="comment"># 示例：下载小文件</span>
+<span class="comment"># download_file("https://httpbin.org/image/jpeg", "sample.jpg")</span>
+
+<span class="highlight-note"># 重要提示：在生产环境中，记得设置超时参数避免请求无限等待</span>
+<span class="comment"># response = requests.get(url, timeout=10)  # 10秒超时</span></pre>
+                </div>
+            </div>
+
+            <!-- 实用工具 - 异常处理 -->
+            <div class="code-card glass-effect" data-category="utility">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-pink-500 to-pink-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">异常处理</h3>
+                        <p class="text-sm opacity-90">Python的错误和异常处理机制</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 基本异常处理结构</span>
+<span class="keyword">try</span>:
+    <span class="keyword">num1</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"请输入第一个数字: "</span>))
+    <span class="keyword">num2</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"请输入第二个数字: "</span>))
+    <span class="keyword">result</span> = num1 / num2
+    <span class="function">print</span>(<span class="string">f"结果: {result}"</span>)
+    
+<span class="keyword">except</span> <span class="function">ValueError</span>:
+    <span class="function">print</span>(<span class="string">"错误: 请输入有效的数字"</span>)
+    
+<span class="keyword">except</span> <span class="function">ZeroDivisionError</span>:
+    <span class="function">print</span>(<span class="string">"错误: 除数不能为零"</span>)
+    
+<span class="keyword">except</span> <span class="keyword">Exception</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"发生未知错误: {e}"</span>)
+    
+<span class="keyword">else</span>:
+    <span class="function">print</span>(<span class="string">"计算成功，没有发生异常"</span>)
+    
+<span class="keyword">finally</span>:
+    <span class="function">print</span>(<span class="string">"无论是否发生异常，这里都会执行"</span>)
+
+<span class="comment"># 创建自定义异常</span>
+<span class="keyword">class</span> <span class="function">InsufficientFundsError</span>(<span class="keyword">Exception</span>):
+    <span class="string">"""余额不足异常"""</span>
+    <span class="keyword">pass</span>
+
+<span class="keyword">class</span> <span class="function">BankAccount</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, balance=<span class="number">0</span>):
+        self.balance = balance
+    
+    <span class="keyword">def</span> <span class="function">withdraw</span>(self, amount):
+        <span class="keyword">if</span> amount > self.balance:
+            <span class="keyword">raise</span> <span class="function">InsufficientFundsError</span>(<span class="string">f"余额不足！当前余额: {self.balance}，取款金额: {amount}"</span>)
+        self.balance -= amount
+        <span class="function">print</span>(<span class="string">f"取款成功！剩余余额: {self.balance}"</span>)
+
+<span class="comment"># 使用自定义异常</span>
+<span class="keyword">account</span> = <span class="function">BankAccount</span>(<span class="number">1000</span>)
+
+<span class="keyword">try</span>:
+    <span class="keyword">account</span>.<span class="function">withdraw</span>(<span class="number">1500</span>)
+<span class="keyword">except</span> <span class="function">InsufficientFundsError</span> <span class="keyword">as</span> e:
+    <span class="function">print</span>(<span class="string">f"错误: {e}"</span>)
+
+<span class="comment"># 使用异常进行流程控制</span>
+<span class="keyword">def</span> <span class="function">get_user_age</span>():
+    <span class="keyword">while</span> <span class="keyword">True</span>:
+        <span class="keyword">try</span>:
+            <span class="keyword">age</span> = <span class="function">int</span>(<span class="function">input</span>(<span class="string">"请输入您的年龄: "</span>))
+            <span class="keyword">if</span> age < <span class="number">0</span> <span class="keyword">or</span> age > <span class="number">150</span>:
+                <span class="keyword">raise</span> <span class="function">ValueError</span>(<span class="string">"年龄必须在0-150之间"</span>)
+            <span class="keyword">return</span> age
+        <span class="keyword">except</span> <span class="function">ValueError</span> <span class="keyword">as</span> e:
+            <span class="function">print</span>(<span class="string">f"输入错误: {e}"</span>)
+
+<span class="comment"># 调用函数</span>
+<span class="comment"># user_age = get_user_age()</span>
+<span class="comment"># print(f"您的年龄是: {user_age}")</span>
+
+<span class="highlight-note"># 重要提示：异常处理应该用于处理意外情况，而不是作为常规的流程控制手段</span></pre>
+                </div>
+            </div>
+
+            <!-- 实用工具 - 实用函数 -->
+            <div class="code-card glass-effect" data-category="utility">
+                <div class="copy-button" onclick="copyCode(this)">
+                    <i class="fa fa-copy"></i>
+                </div>
+                <div class="code-card-header bg-gradient-to-r from-pink-500 to-pink-600 text-white" onclick="toggleCode(this)">
+                    <div>
+                        <h3 class="font-bold">实用工具函数</h3>
+                        <p class="text-sm opacity-90">日常开发中常用的工具函数</p>
+                    </div>
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <div class="code-card-body hidden">
+                    <pre class="code-block"><span class="comment"># 邮箱验证函数</span>
+<span class="keyword">def</span> <span class="function">is_valid_email</span>(email):
+    <span class="string">"""
+    简单的邮箱格式验证
+    
+    参数:
+        email (str): 要验证的邮箱地址
+    
+    返回:
+        bool: 如果邮箱格式有效返回True，否则返回False
+    """</span>
+    <span class="keyword">import</span> re
+    <span class="keyword">pattern</span> = r<span class="string">'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'</span>
+    <span class="keyword">return</span> <span class="function">bool</span>(<span class="function">re.match</span>(pattern, email))
+
+<span class="comment"># 测试邮箱验证</span>
+<span class="keyword">test_emails</span> = [
+    <span class="string">"test@example.com"</span>,
+    <span class="string">"user.name+tag@example.co.uk"</span>,
+    <span class="string">"invalid-email"</span>,
+    <span class="string">"test@.com"</span>
+]
+
+<span class="keyword">for</span> email <span class="keyword">in</span> test_emails:
+    <span class="function">print</span>(<span class="string">f"{email}: {'有效' if is_valid_email(email) else '无效'}"</span>)
+
+<span class="comment"># 文件大小格式化函数</span>
+<span class="keyword">def</span> <span class="function">format_file_size</span>(size_bytes):
+    <span class="string">"""
+    将文件大小从字节转换为人类可读的格式
+    
+    参数:
+        size_bytes (int): 文件大小（字节）
+    
+    返回:
+        str: 格式化后的文件大小
+    """</span>
+    <span class="keyword">for</span> unit <span class="keyword">in</span> [<span class="string">'B'</span>, <span class="string">'KB'</span>, <span class="string">'MB'</span>, <span class="string">'GB'</span>, <span class="string">'TB'</span>]:
+        <span class="keyword">if</span> size_bytes < <span class="number">1024.0</span>:
+            <span class="keyword">return</span> <span class="string">f"{size_bytes:.2f} {unit}"</span>
+        size_bytes /= <span class="number">1024.0</span>
+
+<span class="comment"># 测试文件大小格式化</span>
+<span class="keyword">sizes</span> = [<span class="number">1024</span>, <span class="number">1024</span> * <span class="number">1024</span>, <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">5.5</span>, <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">2</span>]
+<span class="keyword">for</span> size <span class="keyword">in</span> sizes:
+    <span class="function">print</span>(<span class="string">f"{size} 字节 = {format_file_size(size)}"</span>)
+
+<span class="comment"># 随机密码生成函数</span>
+<span class="keyword">def</span> <span class="function">generate_password</span>(length=<span class="number">12</span>, use_special_chars=<span class="keyword">True</span>):
+    <span class="string">"""
+    生成随机密码
+    
+    参数:
+        length (int): 密码长度，默认为12
+        use_special_chars (bool): 是否包含特殊字符，默认为True
+    
+    返回:
+        str: 生成的随机密码
+    """</span>
+    <span class="keyword">import</span> random
+    <span class="keyword">import</span> string
+    
+    <span class="keyword">characters</span> = string.<span class="keyword">ascii_letters</span> + string.<span class="keyword">digits</span>
+    <span class="keyword">if</span> use_special_chars:
+        <span class="keyword">characters</span> += string.<span class="keyword">punctuation</span>
+    
+    <span class="comment"># 确保密码包含至少一个数字和一个特殊字符</span>
+    <span class="keyword">password</span> = [<span class="function">random.choice</span>(string.<span class="keyword">digits</span>)]
+    <span class="keyword">if</span> use_special_chars:
+        <span class="keyword">password</span>.<span class="function">append</span>(<span class="function">random.choice</span>(string.<span class="keyword">punctuation</span>))
+    
+    <span class="comment"># 填充剩余字符</span>
+    <span class="keyword">password</span>.<span class="function">extend</span>([<span class="function">random.choice</span>(<span class="keyword">characters</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(length - <span class="function">len</span>(<span class="keyword">password</span>))])
+    
+    <span class="comment"># 打乱密码字符顺序</span>
+    <span class="function">random.shuffle</span>(<span class="keyword">password</span>)
+    
+    <span class="keyword">return</span> <span class="string">''</span>.<span class="function">join</span>(<span class="keyword">password</span>)
+
+<span class="comment"># 生成几个示例密码</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">3</span>):
+    <span class="function">print</span>(<span class="string">f"密码 {i+1}: {generate_password()}"</span>)
+
+<span class="comment"># URL解析函数</span>
+<span class="keyword">def</span> <span class="function">parse_url</span>(url):
+    <span class="string">"""
+    解析URL并返回其组成部分
+    
+    参数:
+        url (str): 要解析的URL
+    
+    返回:
+        dict: 包含URL各部分的字典
+    """</span>
+    <span class="keyword">from</span> urllib <span class="keyword">import</span> parse
+    
+    <span class="keyword">parsed</span> = parse.<span class="function">urlparse</span>(url)
+    
+    <span class="keyword">return</span> {
+        <span class="string">'scheme'</span>: parsed.<span class="keyword">scheme</span>,      <span class="comment"># 协议（http, https等）</span>
+        <span class="string">'netloc'</span>: parsed.<span class="keyword">netloc</span>,      <span class="comment"># 域名和端口</span>
+        <span class="string">'path'</span>: parsed.<span class="keyword">path</span>,          <span class="comment"># 路径</span>
+        <span class="string">'params'</span>: parsed.<span class="keyword">params</span>,        <span class="comment"># 参数</span>
+        <span class="string">'query'</span>: parsed.<span class="keyword">query</span>,        <span class="comment"># 查询字符串</span>
+        <span class="string">'fragment'</span>: parsed.<span class="keyword">fragment</span>,      <span class="comment"># 片段标识符</span>
+        <span class="string">'hostname'</span>: parsed.<span class="keyword">hostname</span>,    <span class="comment"># 主机名</span>
+        <span class="string">'port'</span>: parsed.<span class="keyword">port</span>           <span class="comment"># 端口号</span>
+    }
+
+<span class="comment"># 测试URL解析</span>
+<span class="keyword">url</span> = <span class="string">"https://www.example.com:8080/path/to/page?param1=value1&param2=value2#section1"</span>
+<span class="keyword">parsed_url</span> = <span class="function">parse_url</span>(url)
+<span class="function">print</span>(<span class="string">"URL解析结果:"</span>)
+<span class="keyword">for</span> key, value <span class="keyword">in</span> <span class="keyword">parsed_url</span>.<span class="function">items</span>():
+    <span class="function">print</span>(<span class="string">f"{key}: {value}"</span>)
+
+<span class="highlight-note"># 重要提示：这些工具函数可以根据实际需求进行扩展和优化</span></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">Python代码示例集</h3>
+                    <p class="text-gray-400">带详细中文注释的Python代码片段集合</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-800 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 Python代码示例集. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 切换代码卡片展开/折叠状态
+        function toggleCode(element) {
+            const card = element.closest('.code-card');
+            const body = card.querySelector('.code-card-body');
+            const icon = element.querySelector('i');
+            
+            body.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // 复制代码到剪贴板
+        function copyCode(element) {
+            const codeBlock = element.closest('.code-card').querySelector('.code-block');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // 显示复制成功提示
+                const originalIcon = element.innerHTML;
+                element.innerHTML = '<i class="fa fa-check"></i>';
+                
+                setTimeout(() => {
+                    element.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        }
+
+        // 分类过滤功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryFilters = document.querySelectorAll('.category-filter');
+            const codeCards = document.querySelectorAll('.code-card');
+            
+            categoryFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // 更新过滤器样式
+                    categoryFilters.forEach(f => {
+                        f.classList.remove('bg-primary', 'text-white');
+                        
+                        if (f === this) {
+                            if (category === 'all') {
+                                f.classList.add('bg-primary', 'text-white');
+                            } else {
+                                f.classList.add('bg-opacity-100');
+                            }
+                        } else {
+                            f.classList.add('bg-opacity-20');
+                        }
+                    });
+                    
+                    // 过滤代码卡片
+                    codeCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('search-input');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                codeCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const code = card.querySelector('.code-block').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm) || code.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
